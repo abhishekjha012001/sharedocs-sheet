@@ -1,5 +1,8 @@
 //rename issue
 //reload issue after share //i.e. you save theen share
+// This is the first time Siddhartha is writing a comment
+
+// This is the second time Siddhartha is writing a comment
 
 var express = require('express');
 app = express(),
@@ -35,13 +38,13 @@ realtimeEditor.onSave(function (data) {
     data_ += data.text[i].text + "<br>";
   }
   _document.findOneAndUpdate({
-    _id: x
-  }, {
-    name: data_,
-    mdate: new Date()
-  }, {
-    upsert: true
-  },
+      _id: x
+    }, {
+      name: data_,
+      mdate: new Date()
+    }, {
+      upsert: true
+    },
     function (err, doc) {
 
     }
@@ -115,8 +118,8 @@ app.get("/drive", isLoggedIn, function (req, res) {
 
 app.get("/drive/:id", isLoggedIn, function (req, res) {
   drivemodel.find({
-    user_id: req.params.id
-  },
+      user_id: req.params.id
+    },
     function (err, docs) {
       var c = docs;
       if (err) {
@@ -136,8 +139,8 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
         for (var i = 0; i < c.length; ++i) {
           if (c[i].doc_type == "docs") {
             _document.find({
-              _id: c[i].doc_id
-            },
+                _id: c[i].doc_id
+              },
               function (err, docs) {
                 doca.push(docs[0]);
 
@@ -154,8 +157,8 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
             );
           } else {
             sheet.find({
-              _id: c[i].sheet_id
-            },
+                _id: c[i].sheet_id
+              },
               function (err, docs) {
                 doca.push(docs[0]);
                 if (doca.length == c.length) {
@@ -184,15 +187,15 @@ app.get("/drive/delete/:doc_type/:id", isLoggedIn, function (req, res) {
 
   if (doc_type == "sheets") {
     sheet.deleteOne({
-      _id: req.params.id
-    },
+        _id: req.params.id
+      },
       function (err) {
         if (err) {
           console.log(err);
         } else {
           drivemodel.deleteMany({
-            sheet_id: req.params.id
-          },
+              sheet_id: req.params.id
+            },
             function (err) {
               if (err) {
                 console.log(err);
@@ -207,15 +210,15 @@ app.get("/drive/delete/:doc_type/:id", isLoggedIn, function (req, res) {
     );
   } else {
     _document.deleteOne({
-      _id: req.params.id
-    },
+        _id: req.params.id
+      },
       function (err) {
         if (err) {
           console.log(err);
         } else {
           drivemodel.deleteMany({
-            doc_id: req.params.id
-          },
+              doc_id: req.params.id
+            },
             function (err) {
               if (err) {
                 cpnsole.log(err);
@@ -274,7 +277,7 @@ app.get("/sheets/:id", isLoggedIn, function (req, res) {
                 x: 0,
                 y: -1
               });
-            } else if (docs[0].permission === "w") {  // w
+            } else if (docs[0].permission === "w") { // w
               res.render("sheets", {
                 id: req.params.id,
                 rid: req.user.username,
@@ -483,8 +486,8 @@ app.get("/word/:id", isLoggedIn, function (req, res) {
     //f1(){res.redner(d var)}
 
     _document.find({
-      _id: req.params.id
-    },
+        _id: req.params.id
+      },
       function (err, docs) {
         if (req.user.username === docs[0].created_by) {
           drivemodel.find({
@@ -511,9 +514,9 @@ app.get("/word/:id", isLoggedIn, function (req, res) {
           });
         } else {
           drivemodel.find({
-            doc_id: req.params.id,
-            user_id: req.user.username
-          },
+              doc_id: req.params.id,
+              user_id: req.user.username
+            },
             function (err, docsa) {
               if (docsa[0].permission === "r") {
                 res.render("word", {
@@ -583,9 +586,9 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
       });
 
       drivemodel.findOne({
-        document_name: req.body.save_fname,
-        user_id: req.user.username
-      },
+          document_name: req.body.save_fname,
+          user_id: req.user.username
+        },
         function (err, doc) {
           //doc exist
 
@@ -595,8 +598,8 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
             });
           } else {
             _document.deleteOne({
-              _id: new_drive.doc_id
-            },
+                _id: new_drive.doc_id
+              },
               function (err) {
                 res.render("word", {
                   doc_text: {
@@ -648,15 +651,15 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
     console.log(req.body);
 
     drivemodel.findOneAndUpdate({
-      user_id: req.user.username,
-      doc_id: req.params.id
-    }, {
-      document_name: req.body.save_fname
-    }, {
-      upsert: true,
-      runValidators: true,
-      context: "query"
-    },
+        user_id: req.user.username,
+        doc_id: req.params.id
+      }, {
+        document_name: req.body.save_fname
+      }, {
+        upsert: true,
+        runValidators: true,
+        context: "query"
+      },
       function (err, doc) {
         if (err) {
           res.render("word", {
@@ -673,14 +676,14 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
         } else {
           // res.redirect("/drive/"+req.user.username);
           _document.findOneAndUpdate({
-            _id: req.params.id
-          }, {
-            name: req.body.fname,
-            document_name: req.body.save_fname,
-            mdate: new Date()
-          }, {
-            upsert: true
-          },
+              _id: req.params.id
+            }, {
+              name: req.body.fname,
+              document_name: req.body.save_fname,
+              mdate: new Date()
+            }, {
+              upsert: true
+            },
             function (err, doc) {
               res.redirect("/drive/" + req.user.username);
             }
